@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('hi there');
+
+    // Interpolated
+    console.log('hello I am a %s string!', 'variable in a');
+    //es6 - backticks/template string
+    const variable = 'variable';
+    console.log(`hello I am a ${variable} in a string`);
+
+    // Styled
+    console.log("%c I'm too texty", "font-size: 50px; background: red; text-shadow: 10px 10px 0 blue")
+
+    // warning!
+    console.warn('uh oh');
+
+    // Error :|
+    console.error('uh oh!');
+
+    // Info
+    console.info('déjà rêvé = dreamy déjà vu');
+
+    // Testing
+    //only prints to console if isn't true
+    console.assert(1 === 2, "That ain't it");
+    //can be used to see if something exists
+    const p = document.querySelector('p');
+    console.assert(p.classList.contains('dang'), 'Nothing dang here');
+
+    // clearing
+    //clears console - can really mess with someone if included at end of script
+    // console.clear();
+
+    // Viewing DOM Elements
+    //shows element itself
+    console.log(p);
+    //console.dir gives you dropdown - can look at classlist, children, dataset, style, methods etc.
+    // console.dir(p);
+
+    // Grouping together
+    //can also use console.groupCollapsed, gives dropdown option
+    dogs.forEach(dog => {
+      console.group(`${dog.name}`);
+      console.log(`This is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} human years old`);
+      console.log(`that is ${dog.age * 7} in dog years`);
+      console.groupEnd(`${dog.name}`);
+    });
+
+    // counting
+    console.count('word');
+    console.count('word');
+    console.count('oh my');
+    console.count('oh my');
+    console.count('word');
+    console.count('word');
+    console.count('word');
+    console.count('oh my');
+    console.count('word');
+    console.count('oh my');
+
+    // timing
+    console.time('fetching data');
+    fetch('https://Docs.TheCatAPI.com')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching data');
+        console.log(data);
+      });
+
+    //tabling
+    //can take array of objects and display in table form
+    console.table(dogs);
+
+  </script>
+</body>
+</html>

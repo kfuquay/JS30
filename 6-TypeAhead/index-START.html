@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="Place Name">
+    <ul class="suggestions">
+      <li>Type Above</li>
+      <li>I'll return places that match</li>
+      <li>Along with population</li>
+    </ul>
+  </form>
+
+<script>
+
+// endpoint is where the data lives
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+//start with an empty array
+const cities = [];
+
+//fetch API - from MDN "The fetch() method takes one mandatory argument, the path to the resource you want to fetch. It returns a Promise that resolves to the Response to that request, whether it is successful or not."
+fetch(endpoint)
+  .then(blob => blob.json())  //takes the promise data puts into jason
+  .then(data => cities.push(...data))  // "spread" - each item in the 'promise' array is pushed into cities array.
+
+//create a function 'findMatches' takes two arguments - the word typed in input and the cities array
+//filters through cities array if word typed matches any part of an element in cities array it returns element
+function findMatches(wordToMatch, cities) {
+  return cities.filter(place => {
+    //find out if city or state matches what was typed -- 'gi' = global insensitive modifiers
+    const regex = new RegExp(wordToMatch, 'gi'); 
+    return place.city.match(regex) || place.state.match(regex)
+  });
+}
+
+//adds appropriate commas to large numbers - 1000 -> 1,000
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+//create function that takes no arguments.  match array calls the findMatches function which returns elements from the cities array which match input.  creates html for matched elements - displays matched elements, highlights matched parts of elements, converts associated numbers to numbers with commas.
+function displayMatches() {
+  const matchArray = findMatches(this.value, cities);
+  const html = matchArray.map(place => {
+    const regex = new RegExp(this.value, 'gi');
+    const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+    const stateName = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+    return `
+      <li>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+      </li>
+    `;
+  }).join('');
+  suggestions.innerHTML = html;
+}
+
+//js interacts with the DOM 
+//html with class of .suggestions become where html is added in displayMatches function
+const searchInput = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+//searchInput area is identified above and now 'listens' to user input
+searchInput.addEventListener('change', displayMatches);
+searchInput.addEventListener('keyup', displayMatches);
+
+</script>
+</body>
+</html>
