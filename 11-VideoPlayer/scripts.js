@@ -1,0 +1,105 @@
+'use strict';
+
+
+// GET ELEMENTS
+
+const player = document.querySelector('.player');
+const video = player.querySelector('.viewer');
+const progress = player.querySelector('.progress');
+const progressBar = player.querySelector('.progress__filled');
+const toggle = player.querySelector('.toggle');
+const ranges = player.querySelectorAll('.slider');
+const skipButtons = player.querySelectorAll('[data-skip]');
+const fullscreen = player.querySelector('.fullscreen');
+
+
+// BUILD FUNCTIONS
+
+//toggle function (play/pause)
+function togglePlay() {
+    if(video.paused) {
+        video.play();
+    } else {
+        video.pause();
+    }
+}
+
+//ternary(conditional) function version of above
+// function togglePlay () {
+//     const method = video.paused ? 'play' : 'pause';
+//     video[method]();
+// }
+
+//refactored version of the ternary function above
+// function togglePlay() {
+//     video[video.paused ? 'play' : 'pause']();
+// }
+
+ function updateButton() {
+    const icon = this.paused ?  '►' : '❚ ❚' ;
+    toggle.textContent = icon;
+    // console.log('update button');
+}
+
+function skip() {
+    video.currentTime += parseFloat(this.dataset.skip)
+    // console.log('skip skip cheerio');
+}
+
+function handleRangeUpdate() {
+    video[this.name] = this.value;
+    // console.log(this.value);
+    // console.log(this.name);
+}
+
+function handleProgress() {
+    const percent = (video.currentTime / video.duration * 100);
+    progressBar.style.flexBasis = `${percent}%`;
+}
+
+function scrub(e) {
+    const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
+    video.currentTime = scrubTime;
+    // console.log(e);
+}
+
+function biggify() {
+    // const status = document.fullscreen;
+    // console.log(player);
+    // if(status === true) {
+    //     document.exitFullscreen();
+    // } else {
+    //     player.requestFullscreen();
+    // }; 
+
+    //rewrite!
+    const status = document.fullscreen ? document.exitFullscreen() : player.requestFullscreen();
+    console.log('biggy biggy biggy');
+}
+
+function updateFullscreenArrow() {
+    const symbol = document.fullscreen ? '✖' : '➚';
+    fullscreen.textContent = symbol;
+}
+
+// HOOK UP EVENT LISTENERS
+
+video.addEventListener('click', togglePlay);
+video.addEventListener('play', updateButton);
+video.addEventListener('pause', updateButton);
+video.addEventListener('timeupdate', handleProgress);
+toggle.addEventListener('click', togglePlay);
+
+skipButtons.forEach(button => button.addEventListener('click', skip));
+
+ranges.forEach(range => range.addEventListener('change', handleRangeUpdate));
+ranges.forEach(range => range.addEventListener('mousemove', handleRangeUpdate));
+
+let mousedown = false;
+progress.addEventListener('click', scrub);
+progress.addEventListener('mousemove', (e) => mousedown && scrub(e));
+progress.addEventListener('mousedown', () => mousedown = true);
+progress.addEventListener('mouseup', () => mousedown = false);
+
+fullscreen.addEventListener('click', biggify);
+document.addEventListener('fullscreenchange', updateFullscreenArrow);
