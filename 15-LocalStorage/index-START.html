@@ -21,7 +21,10 @@
     </ul>
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
-      <input type="submit" value="+ Add Item">
+      <input type="submit" value="+ ADD ITEM">
+      <button class="clear">CLEAR</button>
+      <button class="checkAll">CHECK ALL</button>
+      <button class="uncheckAll">UNCHECK ALL</button>
     </form>
   </div>
 
@@ -30,6 +33,10 @@
   // GRAB ELEMENTS
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
+  const clearButton = document.querySelector('.clear');
+  const checkAllButton = document.querySelector('.checkAll');
+  const uncheckAllButton = document.querySelector('.uncheckAll');
+
 
   // Set items as either list of items from local storage or if none there a blank array
   const items = JSON.parse(localStorage.getItem('items')) || [];
@@ -45,7 +52,6 @@
       text, // <-- es6 for text: text,
       done: false
     };
-
 
     //add new object to items array
     items.push(item);
@@ -82,10 +88,32 @@
     populateList(items, itemsList);
   }
 
+  function clearList() {
+    // console.log('clear');
+    localStorage.clear();
+    location.reload();    
+  }
+
+  function checkAll() {
+    // console.log('toggle');
+    items.forEach(item => item.done = true);
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+
+  function uncheckAll() {
+    items.forEach(item => item.done = false);
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+
   // SET EVENT LISTENERS
   addItems.addEventListener('submit', addItem);
   //list for clicks on parent ul to handle clicks on its child elements(who may or may not exist yet!)
   itemsList.addEventListener('click', toggleDone);
+  clearButton.addEventListener('click', clearList);
+  checkAllButton.addEventListener('click', checkAll);  
+  uncheckAllButton.addEventListener('click', uncheckAll);
 
   //on page load - will load items from local storage if there are any
   populateList(items, itemsList);

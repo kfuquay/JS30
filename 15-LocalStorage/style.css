@@ -69,12 +69,27 @@
       content: '🌮';
     }
 
+    /* .toggleComplete,
+    .clear,
     .add-items {
       margin-top: 20px;
+      text-transform: uppercase;
     }
 
+    .toggleComplete,
+    .clear, 
     .add-items input {
       padding: 10px;
       outline: 0;
       border: 1px solid rgba(0,0,0,0.1);
+    } */
+
+    button,
+    .add-items input {
+      min-width: 150px;
+      padding: 10px;
+      outline: 0;
+      border: 1ps solid rgba(0,0,0,0.1);
+      margin-top: 10px;
     }
+
