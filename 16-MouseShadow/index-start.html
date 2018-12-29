@@ -42,11 +42,10 @@
   //GET ELEMENTS  
   const hero = document.querySelector('.hero');
   const text = hero.querySelector('h1');
-  const walk = 500; //200px - how far will shadow stretch
+  const walk = 500; //how far shadow will stretch
 
   //BUILD FUNCTIONS
   function shadow(e) {
-    // console.log(e);
     const { offsetWidth: width, offsetHeight: height } = hero;
     let { offsetX: x, offsetY: y } = e;
 
@@ -56,7 +55,6 @@
       x = x + e.target.offsetLeft;
       y = y + e.target.offsetTop;
     }
-    //console.log(x, y);
 
     const xWalk = Math.round((x / width * walk) - (walk / 2));
     const yWalk = Math.round((y / width * walk) - (walk / 2));
