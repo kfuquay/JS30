@@ -1,0 +1,50 @@
+* {
+    --text: #FFD700;
+    --pinky: #d0858a;
+    --minty: #8ad085;
+    font-family: 'Coiny', cursive;
+    font-size: 26px;
+}
+
+body{
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+header {
+    background-color: var(--pinky); 
+    display: flex;
+    flex: 1 1 auto;
+    padding: 50px;
+    align-items: center;
+    justify-content: center;
+}
+
+header .head {
+    font-size: 50px;
+    color: whitesmoke;
+    text-shadow: 2px 2px 5px #707372;
+}
+
+main {
+    background-color: var(--minty);
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+ul {
+    display: flex;
+    flex: 2 1 auto;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 50px;    
+ }
+
+li {
+    list-style: none;
+    color: whitesmoke;
+    text-shadow: 2px 2px 5px #707372;
+    margin: 5px 70px;
+}
